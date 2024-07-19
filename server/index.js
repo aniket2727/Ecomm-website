@@ -4,31 +4,34 @@
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+
 const app = express();
 
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-
 // Middleware
+app.use(cors()); // Initialize CORS
 app.use(express.json()); // For parsing application/json
 app.use(cookieParser()); // For parsing cookies
-
-// In-memory "database" for demonstration
-const users = [];
 
 // Secret key for JWT
 const JWT_SECRET = 'your_secret_key_here';
 
-app.use(cors()); // Initialize cors properly
-app.use(express.json());
+// In-memory "database" for demonstration
+const users = [];
 
+// Import database configuration
 require('./database/config'); 
 
+// Import routers
 const userInfoRouter = require('./router/userInfoRouter'); 
+const productInfoRouter = require('./router/productInfoRouter');
 
+// Use routers
 app.use('/app', userInfoRouter); 
+app.use('/app', productInfoRouter);
 
 const port = 9009;
 app.listen(port, () => {
-    console.log("server is started successfully", port); 
+    console.log(`Server is started successfully on port ${port}`); 
 });
