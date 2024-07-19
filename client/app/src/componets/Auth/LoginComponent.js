@@ -7,13 +7,15 @@ import React from "react";
 import {useState} from 'react'
 
 import { isEmpty } from "../Helper/IsEmptyComponent"; 
+import { LoginApi } from "../Api/AuthApis";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [formState, setFormState] = useState(false);
+    const [error, setError] = useState(null);
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         
         // Check if fields are empty
@@ -22,6 +24,21 @@ const LoginComponent = () => {
         } else {
             console.log("The value of email and password is", email, password);
             setFormState(false);
+            setError(null); // Reset error state
+
+            try {
+                const result = await LoginApi({ email, password });
+                console.log("fetch data result", result);
+
+                if (result.status === 'successful') {
+                    // Handle successful login, e.g., redirect to another page
+                } else {
+                    setError(result.error || 'An unexpected error occurred');
+                }
+            } catch (error) {
+                console.error("Error logging in", error);
+                setError(error.message);
+            }
         }
     };
 
@@ -54,6 +71,8 @@ const LoginComponent = () => {
             onChange={(e) => setPassword(e.target.value)}
         />
         {formState && isEmpty(password) && <span className="text-red-500 text-xs italic">Please enter your password</span>}
+
+        {error && <div className="text-red-500 text-xs italic mt-2">{error}</div>}
 
         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6">
             Submit

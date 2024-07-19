@@ -5,17 +5,19 @@ import { isEmpty } from "../Helper/IsEmptyComponent";
 import { isValidEmail } from "../Helper/IsEmailComponenet";
 import { isValidName } from "../Helper/IsNameComponents";
 import { isValidPassword } from "../Helper/IsPasswordComponent";
+import { RegisterApi } from "../Api/AuthApis";
+
 import React from "react";
 import { useState } from "react";
-
 
 const RegisterComponent = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState(false);
 
-    const handleRegister = (event) => {
+    const handleRegister = async (event) => {
         event.preventDefault();
 
         let validationErrors = {};
@@ -32,8 +34,24 @@ const RegisterComponent = () => {
 
         if (Object.keys(validationErrors).length === 0) {
             console.log("Registering user with:", { name, email, password });
-            validationErrors = {}
-            setErrors('')
+
+            try {
+                const result = await RegisterApi({ name, email, password });
+                console.log("The result of register API", result);
+    
+                if (result.status === 'successful') {
+                    setSuccess(true);
+                    setErrors({});
+                    // Handle successful registration, e.g., redirect to another page or show success message
+                } else {
+                    setSuccess(false);
+                    setErrors({ api: result.error || 'An unexpected error occurred' });
+                }
+            } catch (error) {
+                console.error("Error registering user", error);
+                setSuccess(false);
+                setErrors({ api: error.message });
+            }
         } else {
             setErrors(validationErrors);
         }
@@ -81,6 +99,9 @@ const RegisterComponent = () => {
                     />
                     {errors.password && <span className="text-red-500 text-xs italic">{errors.password}</span>}
                 </div>
+
+                {errors.api && <div className="text-red-500 text-xs italic mb-4">{errors.api}</div>}
+                {success && <div className="text-green-500 text-xs italic mb-4">Registration successful!</div>}
 
                 <button
                     type="submit"

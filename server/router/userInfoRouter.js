@@ -5,7 +5,10 @@ const router = express.Router();
 const userController = require('../controller/userInfoController'); // Ensure the path is correct
 
 // Create a new user
-router.post('/userinfo', userController.createUser);
+router.post('/register', userController.createUser);
+
+//Check login 
+router.post('/login', userController.loginUser);
 
 // Get all users
 router.get('/userinfo', userController.getUsers);
