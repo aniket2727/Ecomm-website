@@ -32,7 +32,7 @@ const RegisterComponent = () => {
 
         if (Object.keys(validationErrors).length === 0) {
             console.log("Registering user with:", { name, email, password });
-            validationErrors={}
+            validationErrors = {}
             setErrors('')
         } else {
             setErrors(validationErrors);
@@ -40,43 +40,54 @@ const RegisterComponent = () => {
     };
 
     return (
-        <div>
-            <h1>Register Here</h1>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Name</label>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <h1 className="text-3xl font-bold mb-6">Register Here</h1>
+            <form onSubmit={handleRegister} className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md">
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Name</label>
                     <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
+                        id="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
                     />
-                    {errors.name && <span>{errors.name}</span>}
+                    {errors.name && <span className="text-red-500 text-xs italic">{errors.name}</span>}
                 </div>
 
-                <div>
-                    <label>Email</label>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
                     <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
                     />
-                    {errors.email && <span>{errors.email}</span>}
+                    {errors.email && <span className="text-red-500 text-xs italic">{errors.email}</span>}
                 </div>
 
-                <div>
-                    <label>Password</label>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password</label>
                     <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="password"
+                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
                     />
-                    {errors.password && <span>{errors.password}</span>}
+                    {errors.password && <span className="text-red-500 text-xs italic">{errors.password}</span>}
                 </div>
 
-                <button type="submit">Register</button>
+                <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                    Register
+                </button>
             </form>
         </div>
     );
