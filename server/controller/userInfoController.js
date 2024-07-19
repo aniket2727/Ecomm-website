@@ -6,6 +6,10 @@
 
 const User = require('../database/userInfo'); // Adjust the path according to your folder structure
 
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+// Secret key for JWT
+const JWT_SECRET = 'your_secret_key_here';
 
 // Create a new user or register
 const createUser = async (req, res) => {
@@ -18,8 +22,11 @@ const createUser = async (req, res) => {
             return res.status(409).json({ message: "Email is already in use" });
         }
 
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         // Create and save the new user
-        const user = new User({ name, email, password });
+        const user = new User({ name, email, password: hashedPassword });
         await user.save();
 
         res.status(201).json({ message: 'User created successfully' });
@@ -27,7 +34,6 @@ const createUser = async (req, res) => {
         res.status(500).json({ message: 'Error creating user', error });
     }
 };
-
 
 // Login user by email and password
 const loginUser = async (req, res) => {
@@ -39,16 +45,28 @@ const loginUser = async (req, res) => {
             return res.status(404).json({ message: 'Email not found' });
         }
 
-        // You might want to hash passwords and use a proper authentication mechanism
-        if (user.password === password) {
-            return res.status(200).json({ message: 'Login successful' });
-        } else {
+        // Compare hashed password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             return res.status(401).json({ message: 'Invalid password' });
         }
+
+        // Create JWT token
+        const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+
+        // Set token as a cookie
+        // res.cookie('authToken', token, {
+        //     httpOnly: true, // Prevent JavaScript access
+        //     secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+        //     sameSite: 'Strict' // Prevent CSRF attacks
+        // });
+
+        res.status(200).json({ message: 'Login successful' ,token});
     } catch (error) {
         res.status(500).json({ message: 'Error logging in', error });
     }
 };
+
 
 // Get all users
 const getUsers = async (req, res) => {

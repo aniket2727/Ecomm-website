@@ -4,6 +4,12 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userInfoController'); // Ensure the path is correct
 
+// const authenticateToken=require('../middleware/JwtAuthmiddleware');
+
+// // Apply authentication middleware
+// router.use(authenticateToken);
+
+
 // Create a new user
 router.post('/register', userController.createUser);
 

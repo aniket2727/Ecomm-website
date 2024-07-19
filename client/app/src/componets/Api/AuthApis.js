@@ -6,7 +6,7 @@ const LoginApi = async (data) => {
 
     try {
         const response = await fetch('http://localhost:9009/app/login', {
-            method: 'POST', // Use POST for sending data
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -14,25 +14,33 @@ const LoginApi = async (data) => {
         });
 
         if (!response.ok) {
-            // If the response is not OK, throw an error with the status code
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const result = await response.json();
-        return {
-            status: 'successful',
-            data: result
-        };
+
+        if (result.status === 'successful') {
+            // Store token in local storage
+            localStorage.setItem('authToken', result.token);
+
+            return {
+                status: 'successful',
+                data: result
+            };
+        } else {
+            return {
+                status: 'failed',
+                error: result.message || 'An unexpected error occurred'
+            };
+        }
     } catch (error) {
-        // Log the error and return it
         console.log("Error:", error);
         return {
             status: 'failed',
             error: error.message
         };
     }
-}
-
+};
 // API for register
 const RegisterApi = async (data) => {
     const { name, email, password } = data;
