@@ -5,6 +5,7 @@
 
 import React from "react";
 import {useState} from 'react'
+import { useNavigate } from "react-router-dom";
 
 import { isEmpty } from "../Helper/IsEmptyComponent"; 
 import { LoginApi } from "../Api/AuthApis";
@@ -14,6 +15,8 @@ const LoginComponent = () => {
     const [password, setPassword] = useState('');
     const [formState, setFormState] = useState(false);
     const [error, setError] = useState(null);
+
+    const navigate=useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -29,9 +32,11 @@ const LoginComponent = () => {
             try {
                 const result = await LoginApi({ email, password });
                 console.log("fetch data result", result);
+                // const token1=localStorage.setItem('authToken', result.token);
+                // console.log("the value of token is",token1)
 
                 if (result.status === 'successful') {
-                    // Handle successful login, e.g., redirect to another page
+                    navigate('/home')
                 } else {
                     setError(result.error || 'An unexpected error occurred');
                 }

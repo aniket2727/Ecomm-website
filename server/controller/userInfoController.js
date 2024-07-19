@@ -21,12 +21,8 @@ const createUser = async (req, res) => {
         if (existingUser) {
             return res.status(409).json({ message: "Email is already in use" });
         }
-
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         // Create and save the new user
-        const user = new User({ name, email, password: hashedPassword });
+        const user = new User({ name, email, password });
         await user.save();
 
         res.status(201).json({ message: 'User created successfully' });
@@ -35,35 +31,27 @@ const createUser = async (req, res) => {
     }
 };
 
-// Login user by email and password
+// In your userController.js or equivalent file
+//login user
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ message: 'Email not found' });
+            return res.status(404).json({ status: 'failed', message: 'Email not found' });
         }
 
-        // Compare hashed password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid password' });
+        if (user.password === password) {
+
+            const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+            return res.status(200).json({ status: 'successful', message: 'Login successful', token });
+        } else {
+            return res.status(401).json({ status: 'failed', message: 'Invalid password' });
         }
-
-        // Create JWT token
-        const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-
-        // Set token as a cookie
-        // res.cookie('authToken', token, {
-        //     httpOnly: true, // Prevent JavaScript access
-        //     secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-        //     sameSite: 'Strict' // Prevent CSRF attacks
-        // });
-
-        res.status(200).json({ message: 'Login successful' ,token});
     } catch (error) {
-        res.status(500).json({ message: 'Error logging in', error });
+
+        return res.status(500).json({ status: 'failed', message: 'Error logging in', error });
     }
 };
 

@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 
 // API for login
+
 const LoginApi = async (data) => {
     const { email, password } = data;
-
     try {
         const response = await fetch('http://localhost:9009/app/login', {
             method: 'POST',
@@ -12,17 +12,10 @@ const LoginApi = async (data) => {
             },
             body: JSON.stringify({ email, password })
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const result = await response.json();
-
         if (result.status === 'successful') {
             // Store token in local storage
             localStorage.setItem('authToken', result.token);
-
             return {
                 status: 'successful',
                 data: result
@@ -34,13 +27,15 @@ const LoginApi = async (data) => {
             };
         }
     } catch (error) {
-        console.log("Error:", error);
         return {
             status: 'failed',
             error: error.message
         };
     }
 };
+
+
+
 // API for register
 const RegisterApi = async (data) => {
     const { name, email, password } = data;

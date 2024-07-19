@@ -9,6 +9,7 @@ import { RegisterApi } from "../Api/AuthApis";
 
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RegisterComponent = () => {
     const [name, setName] = useState('');
@@ -16,6 +17,8 @@ const RegisterComponent = () => {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState(false);
+
+    const navigate=useNavigate();
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -42,7 +45,7 @@ const RegisterComponent = () => {
                 if (result.status === 'successful') {
                     setSuccess(true);
                     setErrors({});
-                    // Handle successful registration, e.g., redirect to another page or show success message
+                    navigate('/home')
                 } else {
                     setSuccess(false);
                     setErrors({ api: result.error || 'An unexpected error occurred' });

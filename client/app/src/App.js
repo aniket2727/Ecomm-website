@@ -5,9 +5,14 @@ import React from "react";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes,Navigate } from "react-router-dom";
 
+// eslint-disable-next-line import/first
+import FooterComponent from "./componets/Layout/FooterComponent";
+import HomePageComponent from "./componets/pages/HomepageComponent";
+
 const LoginComponent = lazy(() => import("./componets/Auth/LoginComponent"));
 const RegisterComponent = lazy(() => import("./componets/Auth/RegisterComponent"));
 const NavbarComponent=lazy(()=>import("./componets/Layout/NavbarComponent"))
+
 
 // import NavbarComponent from "./componets/Layout/NavbarComponent";
 
@@ -30,11 +35,13 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/register" element={<RegisterComponent />} />
+            <Route path="/home" element={<HomePageComponent/>}/>
             <Route path="/" element={<PrivateRoute element={<Navigate to="/login" />} />} />
             {/* Add more protected routes here */}
             <Route path="/protected" element={<PrivateRoute element={<div>Protected Page</div>} />} />
             <Route path="*" element={<div>File not found</div>} />
           </Routes>
+          <FooterComponent/>
         </Suspense>
       </BrowserRouter>
     </div>
