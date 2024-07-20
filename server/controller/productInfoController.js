@@ -3,6 +3,23 @@
 
 const Product = require('../database/productInfoSchema');
 
+
+// get all products
+c// Get all products
+const getAllProducts = async (req, resp) => {
+    try {
+        const data = await Product.find();
+        if (data.length > 0) {
+            resp.status(200).json({ message: "Data is sent", result: data });
+        } else {
+            resp.status(404).json({ message: "Data not found" });
+        }
+    } catch (error) {
+        resp.status(500).json({ message: error.message });
+    }
+};
+
+
 // Get products by category
 const getProductByCategory = async (req, res) => {
     const { category } = req.params;
