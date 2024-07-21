@@ -12,6 +12,8 @@ import HomePageComponent from "./componets/pages/HomepageComponent";
 const LoginComponent = lazy(() => import("./componets/Auth/LoginComponent"));
 const RegisterComponent = lazy(() => import("./componets/Auth/RegisterComponent"));
 const NavbarComponent=lazy(()=>import("./componets/Layout/NavbarComponent"))
+const ProductbuyList=lazy(()=>import('./componets/pages/Productbuyhistory'))
+const CartDataList=lazy(()=>import('./componets/pages/CartDatabyEmail'))
 
 
 // import NavbarComponent from "./componets/Layout/NavbarComponent";
@@ -37,6 +39,8 @@ function App() {
             <Route path="/register" element={<RegisterComponent />} />
             <Route path="/home" element={<HomePageComponent/>}/>
             <Route path="/" element={<PrivateRoute element={<Navigate to="/login" />} />} />
+            <Route path="/productbuylist" element={<ProductbuyList/>}/>
+            <Route path="/usercartlist" element={<CartDataList/>}/>
             {/* Add more protected routes here */}
             <Route path="/protected" element={<PrivateRoute element={<div>Protected Page</div>} />} />
             <Route path="*" element={<div>File not found</div>} />
