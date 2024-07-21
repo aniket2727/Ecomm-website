@@ -26,10 +26,12 @@ require('./database/config');
 // Import routers
 const userInfoRouter = require('./router/userInfoRouter'); 
 const productInfoRouter = require('./router/productInfoRouter');
+const productBuy=require('./router/productBuyRouter')
 
 // Use routers
 app.use('/app', userInfoRouter); 
 app.use('/app', productInfoRouter);
+app.use('/app',productBuy);
 
 const port = 9009;
 app.listen(port, () => {
