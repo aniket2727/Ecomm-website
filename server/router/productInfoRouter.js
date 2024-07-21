@@ -2,6 +2,10 @@ const express = require('express');
 const Router = express.Router();
 const productInfo = require('../controller/productInfoController');
 
+
+//Route to get all products
+Router.get('/getallproducts',productInfo.getAllProducts)
+
 // Route to get products by category
 Router.get('/products/category/:category', productInfo.getProductByCategory);
 

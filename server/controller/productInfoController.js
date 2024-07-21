@@ -4,8 +4,8 @@
 const Product = require('../database/productInfoSchema');
 
 
-// get all products
-c// Get all products
+
+// Get all products
 const getAllProducts = async (req, resp) => {
     try {
         const data = await Product.find();
@@ -74,4 +74,4 @@ const getProductByCategoryAndPrice = async (req, res) => {
     }
 };
 
-module.exports = { getProductByCategory, getProductByPrice, getProductByCategoryAndPrice };
+module.exports = { getProductByCategory, getProductByPrice, getProductByCategoryAndPrice ,getAllProducts};
