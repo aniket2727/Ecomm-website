@@ -1,11 +1,9 @@
-// code is written by aniket kadam
-// router for cart data
-
 const express = require('express');
 const Router = express.Router();
 const cartData = require('../controller/cartDataController');
+const authenticateToken = require('../middleware/JwtAuthmiddleware'); // Import the middleware
 
-Router.get('/getcart', cartData.getCartDataByEmail);
-Router.post('/addcart', cartData.addCartDataByEmail);
+Router.get('/getcart', authenticateToken, cartData.getCartDataByEmail); // Apply middleware
+Router.post('/addcart', authenticateToken, cartData.addCartDataByEmail); // Apply middleware
 
 module.exports = Router;

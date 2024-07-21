@@ -1,111 +1,115 @@
-
 // Code is written by Aniket Kadam
 // User buy and product carts data APIs
 
-import { json } from "react-router-dom";
 
-const addBuyProductByEmail = async (data) => {
-    const { userEmail, productId, productName, productImage, productCaption, productPrice } = data;
-  
-    try {
-      const response = await fetch('http://localhost:9009/app/addproductbuyemail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userEmail,
-          productId,
-          productName,
-          productImage,
-          productCaption,
-          productPrice,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Unable to add data');
-      }
-  
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      return { error: error.message };
-    }
-  };
+// Add Buy Product by Email
+const addBuyProductByEmail = async (data, token) => {
+  const { userEmail, productId, productName, productImage, productCaption, productPrice } = data;
 
+  try {
+    const response = await fetch('http://localhost:9009/app/addproductbuyemail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userEmail,
+        productId,
+        productName,
+        productImage,
+        productCaption,
+        productPrice,
+      }),
+    });
 
-  const fetchproductBuyListByEmail=async(email)=>{
-
-    const respoce=await fetch('http://localhost:9009/app/getproductbyemail',{
-      method:'get',
-      body:json.stringify({email}),
-      hedaers:{
-        'Content-Type':'application/json'
-      }
-    })
-
-    if(!respoce.ok){
-      throw new Error ("failed to fech data");
+    if (!response.ok) {
+      throw new Error('Unable to add data');
     }
 
-    const result=await respoce.json();
+    const result = await response.json();
     return result;
-
+  } catch (error) {
+    return { error: error.message };
   }
+};
 
-  const addCartDataByEmail = async (data) => {
-    const { userEmail, productId, productName, productImage, productCaption, productPrice } = data;
-  
-    try {
-      const response = await fetch('http://localhost:9009/app/addCartDatabuyemail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userEmail,
-          productId,
-          productName,
-          productImage,
-          productCaption,
-          productPrice,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Unable to add data');
-      }
-  
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      return { error: error.message };
-    }
-  };
+// Fetch Product Buy List by Email
+const fetchproductBuyListByEmail = async (email, token) => {
+  try {
+    const response = await fetch('http://localhost:9009/app/getproductbyemail', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email }),
+    });
 
-
-
-  const fetchCartDatabyEmail=async(email)=>{
-
-    const respoce=await fetch('http://localhost:9009/app/getcartsbyemail',{
-      method:'get',
-      body:json.stringify({email}),
-      hedaers:{
-        'Content-Type':'application/json'
-      }
-    })
-
-    if(!respoce.ok){
-      throw new Error ("failed to fech data");
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
     }
 
-    const result=await respoce.json();
+    const result = await response.json();
     return result;
-
+  } catch (error) {
+    return { error: error.message };
   }
+};
 
+// Add Cart Data by Email
+const addCartDataByEmail = async (data, token) => {
+  const { userEmail, productId, productName, productImage, productCaption, productPrice } = data;
 
+  try {
+    const response = await fetch('http://localhost:9009/app/addcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userEmail,
+        productId,
+        productName,
+        productImage,
+        productCaption,
+        productPrice,
+      }),
+    });
 
-  export {addBuyProductByEmail,fetchproductBuyListByEmail,fetchCartDatabyEmail,addCartDataByEmail}
-  
+    if (!response.ok) {
+      throw new Error('Unable to add data');
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+// Fetch Cart Data by Email
+const fetchCartDatabyEmail = async (email, token) => {
+  try {
+    const response = await fetch('http://localhost:9009/app/getcart', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export { addBuyProductByEmail, fetchproductBuyListByEmail, fetchCartDatabyEmail, addCartDataByEmail };
