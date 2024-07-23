@@ -11,14 +11,16 @@ import { fetchproductBuyListByEmail } from "../Api/productapi/Userbuyingandcarta
 const Productbuylist=()=>{
     const [data,setData]=useState([]);
 
-    const email="aniketkadam@gamil.com";
+    const token= localStorage.getItem('authToken');
+    const email =localStorage.getItem('email');
+
 
     useEffect(()=>{
 
         const handlefetchData=async()=>{
             try{
                  
-                const result=await fetchproductBuyListByEmail(email);
+                const result=await fetchproductBuyListByEmail(email,token);
                 setData(result);
                 console.log(result);
             }
@@ -30,7 +32,7 @@ const Productbuylist=()=>{
          
         handlefetchData();
 
-    },[]);
+    },[email,token]);
     return(
         <div>
            <h1>product buy list</h1>

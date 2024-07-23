@@ -1,16 +1,20 @@
+/* eslint-disable no-unused-vars */
 // Code is written by Aniket Kadam
 
 import React, { useEffect, useState } from 'react';
 import { FetchAllData } from '../Api/productapi/ProductData';
+import { useProducts } from '../Contextapis/ProductDatacontextAPI';
 
 const HomePageComponent = () => {
   const [data, setData] = useState([]);
+  const { products, setProducts } = useProducts(); // Use the correct hook
 
   useEffect(() => {
     const handleFetchData = async () => {
       try {
         const result = await FetchAllData();
         setData(result);
+        setProducts(result); // Store data in context
         console.log("The values of data are ", result);
       } catch (error) {
         console.log("Error occurred: ", error);
@@ -18,9 +22,7 @@ const HomePageComponent = () => {
     };
 
     handleFetchData();
-  }, []);
-
-  
+  }, [setProducts]);
 
   return (
     <div className="container mx-auto p-4">
@@ -30,7 +32,7 @@ const HomePageComponent = () => {
           <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden">
             <img 
               src={product.image || 'https://via.placeholder.com/150'} 
-              alt={product.name} 
+              alt={product.productName} 
               className="w-full h-48 object-cover"
             />
             <div className="p-4">

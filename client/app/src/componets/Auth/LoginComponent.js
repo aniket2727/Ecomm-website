@@ -31,9 +31,17 @@ const LoginComponent = () => {
 
             try {
                 const result = await LoginApi({ email, password });
-                console.log("fetch data result", result);
-                // const token1=localStorage.setItem('authToken', result.token);
-                // console.log("the value of token is",token1)
+
+                 console.log("fetch data result", result);
+
+                 //local storage set data
+                 localStorage.setItem('authToken', result.data.token);
+                localStorage.setItem('email', result.data.email);
+
+                // Log the values stored in localStorage
+                console.log("Stored token:", localStorage.getItem('authToken'));
+                console.log("Stored email:", localStorage.getItem('email'));
+
 
                 if (result.status === 'successful') {
                     navigate('/home')

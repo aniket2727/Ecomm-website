@@ -7,7 +7,7 @@
 
 
 // code is wriiten by aniket kadam
-//product buy by user list display page
+//carts by user list display page
 import React, { useEffect, useState } from 'react'
 
 
@@ -15,15 +15,15 @@ import { fetchCartDatabyEmail } from '../Api/productapi/Userbuyingandcartapis';
 
 const CartDataByEmailDisplay=()=>{
     const [data,setData]=useState([]);
-
-    const email="aniketkadam@gamil.com";
+    const token= localStorage.getItem('authToken');
+    const email =localStorage.getItem('email');
 
     useEffect(()=>{
 
         const handlefetchData=async()=>{
             try{
                  
-                const result=await fetchCartDatabyEmail(email);
+                const result=await fetchCartDatabyEmail(email,token);
                 setData(result);
                 console.log(result);
             }
@@ -34,11 +34,10 @@ const CartDataByEmailDisplay=()=>{
         }
          
         handlefetchData();
-
-    },[]);
+    },[email,token]);
     return(
         <div>
-           <h1>product buy list</h1>
+           <h1>carts  list</h1>
         </div>
     )
 };

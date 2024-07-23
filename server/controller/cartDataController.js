@@ -7,12 +7,14 @@ const cartData = require('../database/cartDataSchema');
 const getCartDataByEmail = async (req, resp) => {
   try {
     const { email } = req.body;
+   // console.log("email is ",email);
 
     if (!email) {
       return resp.status(400).json({ message: "Email is required" });
     }
 
     const result = await cartData.find({ userEmail: email });
+   // console.log("the result is ",result);
     if (result.length > 0) {
       resp.status(200).json({ message: "Data is sent", result });
     } else {
@@ -52,6 +54,5 @@ const addCartDataByEmail = async (req, resp) => {
     }
   };
   
-  module.exports = { getCartDataByEmail, addCartDataByEmail };
 
 module.exports = { getCartDataByEmail, addCartDataByEmail };

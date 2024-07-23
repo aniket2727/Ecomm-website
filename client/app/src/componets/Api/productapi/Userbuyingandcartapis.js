@@ -38,7 +38,7 @@ const addBuyProductByEmail = async (data, token) => {
 const fetchproductBuyListByEmail = async (email, token) => {
   try {
     const response = await fetch('http://localhost:9009/app/getproductbyemail', {
-      method: 'GET',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -93,7 +93,7 @@ const addCartDataByEmail = async (data, token) => {
 const fetchCartDatabyEmail = async (email, token) => {
   try {
     const response = await fetch('http://localhost:9009/app/getcart', {
-      method: 'GET',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

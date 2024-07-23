@@ -45,7 +45,7 @@ const loginUser = async (req, res) => {
         if (user.password === password) {
 
             const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-            return res.status(200).json({ status: 'successful', message: 'Login successful', token });
+            return res.status(200).json({ status: 'successful', message: 'Login successful', token ,email});
         } else {
             return res.status(401).json({ status: 'failed', message: 'Invalid password' });
         }
