@@ -1,7 +1,7 @@
 import React from "react";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { ProductProvider } from './componets/Contextapis/ProductDatacontextAPI'; 
+import { ProductProvider } from "./componets/Contextapis/ProductDatacontextAPI";
 
 // Lazy loading components
 const LoginComponent = lazy(() => import("./componets/Auth/LoginComponent"));
@@ -33,11 +33,11 @@ function App() {
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/register" element={<RegisterComponent />} />
             <Route path="/" element={<PrivateRoute element={<Navigate to="/home" />} />} />
-
+       
             <Route path="/productbuylist" element={<ProductbuyList />} />
             <Route path="/usercartlist" element={<CartDataList />} />
             <Route path="/home" element={<HomePageComponent />} />
-            <Route path="/productdetails" element={<ProductDetailsPage />} />
+            <Route path="/product/:id" element={<ProductDetailsPage />} />
             <Route path="/p" element={<ProductBuyingPage />} />
 
             <Route path="/protected" element={<PrivateRoute element={<div>Protected Page</div>} />} />

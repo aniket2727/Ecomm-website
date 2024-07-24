@@ -3,18 +3,19 @@
 
 import React, { useEffect, useState } from 'react';
 import { FetchAllData } from '../Api/productapi/ProductData';
-import { useProducts } from '../Contextapis/ProductDatacontextAPI';
+import { Link } from 'react-router-dom';
 
 const HomePageComponent = () => {
   const [data, setData] = useState([]);
-  const { products, setProducts } = useProducts(); // Use the correct hook
 
   useEffect(() => {
     const handleFetchData = async () => {
       try {
         const result = await FetchAllData();
         setData(result);
-        setProducts(result); // Store data in context
+
+        // Store data in localStorage (as a string)
+        localStorage.setItem("productdata", JSON.stringify(result));
         console.log("The values of data are ", result);
       } catch (error) {
         console.log("Error occurred: ", error);
@@ -22,17 +23,21 @@ const HomePageComponent = () => {
     };
 
     handleFetchData();
-  }, [setProducts]);
+  }, []);
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Home Page</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data.map((product) => (
-          <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden">
-            <img 
-              src={product.image || 'https://via.placeholder.com/150'} 
-              alt={product.productName} 
+          <Link
+            to={`/product/${product._id}`}
+            key={product.id}
+            className="bg-white shadow-md rounded-lg overflow-hidden"
+          >
+            <img
+              src={product.image || 'https://via.placeholder.com/150'}
+              alt={product.productName}
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
@@ -41,7 +46,7 @@ const HomePageComponent = () => {
               <p className="text-yellow-500">Rating: {product.productRating}</p>
               <p className="text-gray-600">{product.productCaption}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

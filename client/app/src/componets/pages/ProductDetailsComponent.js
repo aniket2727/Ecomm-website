@@ -1,33 +1,41 @@
-import React from 'react';
-import { useProducts } from '../Contextapis/ProductDatacontextAPI';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const ProductDetailsPage = () => {
- 
-    const { products } = useProducts(); // Access context
+  const { id } = useParams(); // Retrieve the ID from the URL
+  const [product, setProduct] = useState(null);
 
-    console.log("this is product display page",products);
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("productdata"));
+    console.log("local storage data is ",storedData);
+    if (storedData) {
+      const productDetail = storedData.find(item => item._id === id);
+      setProduct(productDetail);
+    }
+  }, [id]);
 
-    // For example, display the first product's details
-    const product = products[0]; // Adjust as needed
-
+  console.log("produt selected is ",product);
+  console.log('id is',id);
 
   return (
-    <div>
-      <h1>Product Details</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Product Details</h1>
       {product ? (
-        <div>
-          <h2>{product.productName}</h2>
-          <img 
-            src={product.image || 'https://via.placeholder.com/150'} 
-            alt={product.productName} 
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <img
+            src={product.image || 'https://via.placeholder.com/150'}
+            alt={product.productName}
             className="w-full h-48 object-cover"
           />
-          <p>Price: ${product.productPrice}</p>
-          <p>Rating: {product.productRating}</p>
-          <p>{product.productCaption}</p>
+          <div className="p-4">
+            <h2 className="text-lg font-bold">{product.productName}</h2>
+            <p className="text-gray-700">${product.productPrice}</p>
+            <p className="text-yellow-500">Rating: {product.productRating}</p>
+            <p className="text-gray-600">{product.productCaption}</p>
+          </div>
         </div>
       ) : (
-        <p>No product details available</p>
+        <p>Loading...</p>
       )}
     </div>
   );
