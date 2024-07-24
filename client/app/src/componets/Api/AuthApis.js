@@ -16,6 +16,7 @@ const LoginApi = async (data) => {
         if (result.status === 'successful') {
             // Store token in local storage
             localStorage.setItem('authToken', result.token);
+            localStorage.setItem('email',result.email)
             return {
                 status: 'successful',
                 data: result

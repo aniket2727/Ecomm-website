@@ -6,9 +6,9 @@ const router = express.Router();
 const productBuyController = require('../controller/productBoyController');
 const authenticationToken=require('../middleware/JwtAuthmiddleware');
 // Route to add a product
-router.post('/addproductbuyemail',authenticationToken, productBuyController.addProductBuylistByEmail);
+router.post('/addproductbuyemail', productBuyController.addProductBuylistByEmail);
 
 // Route to get products by email
-router.post('/getproductbyemail',authenticationToken, productBuyController.getProductBuylistByEmail);
+router.post('/getproductbyemail', productBuyController.getProductBuylistByEmail);
 
 module.exports = router;

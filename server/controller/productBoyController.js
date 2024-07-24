@@ -35,6 +35,7 @@ const addProductBuylistByEmail = async (req, resp) => {
     resp.status(201).json({ message: "Product added successfully", result });
 
   } catch (error) {
+    console.log(error);
     resp.status(500).json({ message: "Error", error });
   }
 };

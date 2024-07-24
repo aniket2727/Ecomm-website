@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { addBuyProductByEmail } from '../Api/productapi/Userbuyingandcartapis';
 
 const ProductBuyingPage = () => {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1); // Default quantity
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("productdata"));
-    console.log("the product data from localhost",storedData)
     const productId = localStorage.getItem("currentProductId");
-    console.log("the product id from localhost",productId)
     const storedQuantity = JSON.parse(localStorage.getItem(`product_${productId}_quantity`)) || 1;
-    console.log("the product count from localhost",storedQuantity);
 
     if (storedData && productId) {
       const productDetail = storedData.find(item => item._id === productId);
@@ -21,16 +21,41 @@ const ProductBuyingPage = () => {
     }
   }, []);
 
-  const handleConfirmBuy = () => {
-    console.log(`Confirmed purchase of ${quantity} units of ${product.productName}`);
-    // Implement confirmation logic, e.g., sending order to backend
-    // Clear localStorage
-    const productId = localStorage.getItem("currentProductId");
-    localStorage.removeItem("currentProductId");
-    if (productId) {
-      localStorage.removeItem(`product_${productId}_quantity`);
+  const handleConfirmBuy = async () => {
+    const token = localStorage.getItem('authToken');
+    const email = localStorage.getItem('email');
+    //const productId = localStorage.getItem("currentProductId");
+    console.log("value of token is ",token);
+    console.log("email is ",email);
+
+    if (product && token && email) {
+      const data = {
+        userEmail: email,
+        productId: product._id,
+        productName: product.productName,
+        productImage: product.productImage,
+        productCaption: product.productCaption,
+        productPrice: totalPrice,
+      };
+
+      try {
+        const result = await addBuyProductByEmail(data, token);
+        if (result.error) {
+          console.error(result.error);
+        } else {
+          console.log('Purchase confirmed', result);
+          // Clear localStorage
+          localStorage.removeItem("currentProductId");
+          localStorage.removeItem(`product_${product._id}_quantity`);
+          // Navigate to the home page
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('Error confirming purchase:', error);
+      }
+    } else {
+      console.error('Product or user information missing');
     }
-    // Optionally redirect or show confirmation message
   };
 
   return (

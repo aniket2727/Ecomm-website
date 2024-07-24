@@ -36,6 +36,7 @@ function App() {
        
             <Route path="/productbuylist" element={<ProductbuyList />} />
             <Route path="/usercartlist" element={<CartDataList />} />
+            
             <Route path="/home" element={<HomePageComponent />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
             <Route path="/productbuy" element={<ProductBuyingPage />} />
