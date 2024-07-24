@@ -42,6 +42,19 @@ const ProductDetailsPage = () => {
     navigate('/productbuy');
   };
 
+  // Handle adding to cart
+  const handleAddToCart = () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productInCart = cart.find(item => item._id === id);
+
+    if (!productInCart) {
+      cart.push({ ...product });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Product added to cart');
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Product Details</h1>
@@ -80,6 +93,13 @@ const ProductDetailsPage = () => {
                 className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2"
               >
                 Buy
+              </button>
+
+              <button 
+                onClick={handleAddToCart} 
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2"
+              >
+                Add to Cart
               </button>
 
               <button 
