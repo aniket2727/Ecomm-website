@@ -38,7 +38,7 @@ function App() {
             <Route path="/usercartlist" element={<CartDataList />} />
             <Route path="/home" element={<HomePageComponent />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
-            <Route path="/p" element={<ProductBuyingPage />} />
+            <Route path="/productbuy" element={<ProductBuyingPage />} />
 
             <Route path="/protected" element={<PrivateRoute element={<div>Protected Page</div>} />} />
             <Route path="*" element={<div>File not found</div>} />
