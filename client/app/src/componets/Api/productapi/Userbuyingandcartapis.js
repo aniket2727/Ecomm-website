@@ -112,4 +112,27 @@ const fetchCartDatabyEmail = async (email, token) => {
   }
 };
 
-export { addBuyProductByEmail, fetchproductBuyListByEmail, fetchCartDatabyEmail, addCartDataByEmail };
+// Add the removeProductFromCart function
+const removeProductFromCart = async (email, productId, token) => {
+  try {
+    const response = await fetch('http://localhost:9009/app/removeproductfromcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, productId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to remove product from cart");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export { addBuyProductByEmail, fetchproductBuyListByEmail, fetchCartDatabyEmail, addCartDataByEmail ,removeProductFromCart};
