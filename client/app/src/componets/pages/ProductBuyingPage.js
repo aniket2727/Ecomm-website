@@ -24,9 +24,6 @@ const ProductBuyingPage = () => {
   const handleConfirmBuy = async () => {
     const token = localStorage.getItem('authToken');
     const email = localStorage.getItem('email');
-    //const productId = localStorage.getItem("currentProductId");
-    console.log("value of token is ",token);
-    console.log("email is ",email);
 
     if (product && token && email) {
       const data = {
@@ -43,7 +40,6 @@ const ProductBuyingPage = () => {
         if (result.error) {
           console.error(result.error);
         } else {
-          console.log('Purchase confirmed', result);
           // Clear localStorage
           localStorage.removeItem("currentProductId");
           localStorage.removeItem(`product_${product._id}_quantity`);

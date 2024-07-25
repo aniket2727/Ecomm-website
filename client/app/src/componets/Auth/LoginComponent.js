@@ -36,7 +36,7 @@ const LoginComponent = () => {
 
                  //local storage set data
                  localStorage.setItem('authToken', result.data.token);
-                localStorage.setItem('email', result.data.email);
+                 localStorage.setItem('email', result.data.email);
 
                 // Log the values stored in localStorage
                 console.log("Stored token:", localStorage.getItem('authToken'));

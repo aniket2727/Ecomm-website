@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // Code is written by Aniket Kadam
 
 import React, { useEffect, useState } from 'react';
@@ -13,10 +12,7 @@ const HomePageComponent = () => {
       try {
         const result = await FetchAllData();
         setData(result);
-
-        // Store data in localStorage (as a string)
         localStorage.setItem("productdata", JSON.stringify(result));
-        console.log("The values of data are ", result);
       } catch (error) {
         console.log("Error occurred: ", error);
       }
@@ -26,9 +22,9 @@ const HomePageComponent = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 min-h-screen flex flex-col">
       <h1 className="text-2xl font-bold mb-4">Home Page</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-h-[500px]">
         {data.map((product) => (
           <Link
             to={`/product/${product._id}`}

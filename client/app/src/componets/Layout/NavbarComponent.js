@@ -1,15 +1,20 @@
 // code is written by Aniket Kadam
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 
 const NavbarComponent = () => {
-    
+
     const [loginStatus, setLoginStatus] = useState('');
     const navigate = useNavigate();
    
-   
+    
+    useEffect(() => {
+        const authToken = localStorage.getItem('authToken');
+        setLoginStatus(authToken);
+    }, []);
+
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("email");
