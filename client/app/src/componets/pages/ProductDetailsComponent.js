@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { addCartDataByEmail } from '../Api/productapi/Userbuyingandcartapis';
 
 const ProductDetailsPage = () => {
   const { id } = useParams(); // Retrieve the ID from the URL
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1); // State for product quantity
+
+  const token = localStorage.getItem('authToken');
+  const email = localStorage.getItem('email');
 
   const navigate = useNavigate();
 
@@ -43,16 +47,33 @@ const ProductDetailsPage = () => {
   };
 
   // Handle adding to cart
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const productInCart = cart.find(item => item._id === id);
 
     if (!productInCart) {
-      cart.push({ ...product });
-    }
+      cart.push({ ...product, quantity });
+      localStorage.setItem('cart', JSON.stringify(cart));
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Product added to cart');
+      // Add to the server-side cart
+      const response = await addCartDataByEmail({
+        userEmail: email,
+        productId: product._id,
+        productName: product.productName,
+        productImage: product.productImage,
+        productCaption: product.productCaption,
+        productPrice: product.productPrice,
+        quantity,
+      }, token);
+
+      if (response.error) {
+        alert('Failed to add product to cart');
+      } else {
+        alert('Product added to cart');
+      }
+    } else {
+      alert('Product already in cart');
+    }
   };
 
   return (

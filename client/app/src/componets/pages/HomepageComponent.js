@@ -32,7 +32,7 @@ const HomePageComponent = () => {
         {data.map((product) => (
           <Link
             to={`/product/${product._id}`}
-            key={product.id}
+            key={product._id}
             className="bg-white shadow-md rounded-lg overflow-hidden"
           >
             <img
